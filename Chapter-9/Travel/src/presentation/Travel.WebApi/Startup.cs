@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +10,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Travel.Application;
+using Travel.Application.Common.Interfaces;
 using Travel.Data;
+using Travel.Identity;
+using Travel.Identity.Helpers;
+using Travel.Identity.Services;
 using Travel.Shared;
-using Travel.WebApi.Auth;
+using Travel.WebApi.Filters;
 using Travel.WebApi.Helpers;
 
 namespace Travel.WebApi
@@ -34,14 +36,20 @@ namespace Travel.WebApi
             services.AddApplication();
             services.AddInfrastructureData();
             services.AddInfrastructureShared(Configuration);
+            services.AddInfrastructureIdentity(Configuration);
 
             services.AddHttpContextAccessor();
-
             services.AddControllers();
+            services.AddControllersWithViews(options =>
+                options.Filters.Add(new ApiExceptionFilter()));
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true
+            );
+
             services.AddSwaggerGen(c =>
             {
                 c.OperationFilter<SwaggerDefaultValues>();
-                
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme.",
@@ -65,9 +73,6 @@ namespace Travel.WebApi
                     }
                 });
             });
-            
-
-            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
             services.AddApiVersioning(config =>
             {
@@ -80,10 +85,8 @@ namespace Travel.WebApi
             {
                 options.GroupNameFormat = "'v'VVV";
             });
-            
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            
-            services.AddScoped<IUserService, UserService>();
+
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,11 +108,11 @@ namespace Travel.WebApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            
+
             app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
