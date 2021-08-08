@@ -1,1 +1,0 @@
-- [Merge from Github](https://github.com/wagnerhsu/packt-ASP.NET-Core-5-and-Vue.js-3-Second-Edition/compare/master...PacktPublishing:master)
