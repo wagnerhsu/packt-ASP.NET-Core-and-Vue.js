@@ -12,8 +12,7 @@
         id="newTodo"
         placeholder="what's on your mind?"
         v-model="newTodo"
-        name="newTodo"
-      />
+        name="newTodo" />
     </div>
 
     <div class="mb-5 d-flex flex-row justify-content-start">
@@ -42,20 +41,17 @@
       <li
         class="list-group-item d-flex flex-row justify-content-between align-items-center"
         v-for="(todo, index) in todos"
-        :key="todo.id"
-      >
+        :key="todo.id">
         <h3
           :class="{ mark: todo.done }"
           style="cursor: pointer"
-          @click="toggleDone(todo)"
-        >
+          @click="toggleDone(todo)">
           {{ todo.content }}
         </h3>
         <button
           type="button"
           class="btn btn-warning"
-          @click="removeTodo(index)"
-        >
+          @click="removeTodo(index)">
           ✔️ Done & Remove
         </button>
       </li>
@@ -64,9 +60,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, onMounted } from "vue";
-import { TodoType } from "@/models/todoModel";
-import { v4 as uuidv4 } from "uuid";
+import { defineComponent, ref, PropType, onMounted } from 'vue';
+import { TodoType } from '@/models/todoModel';
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   title: string;
@@ -74,7 +70,7 @@ type Props = {
 };
 
 export default defineComponent({
-  name: "TodoForm",
+  name: 'TodoForm',
 
   props: {
     about: {
@@ -87,8 +83,8 @@ export default defineComponent({
     /*local states*/
 
     // implicit type safe
-    const version = ref("v1");
-    const newTodo = ref(""); // ref<string> is too verbose
+    const version = ref('v1');
+    const newTodo = ref(''); // ref<string> is too verbose
 
     // explicit type safe
     const todos = ref<TodoType[]>([]);
@@ -102,9 +98,9 @@ export default defineComponent({
         content: newTodo.value,
       });
 
-      console.log("newTodo:", newTodo.value);
+      console.log('newTodo:', newTodo.value);
 
-      newTodo.value = "";
+      newTodo.value = '';
     }
 
     function toggleDone(todo: TodoType): void {

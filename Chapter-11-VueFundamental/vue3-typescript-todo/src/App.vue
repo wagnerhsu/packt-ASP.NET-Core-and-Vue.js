@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import TodoForm from "./components/TodoFom.vue";
+import { defineComponent, ref } from 'vue';
+import TodoForm from './components/TodoFom.vue';
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
 
   components: {
     TodoForm,
@@ -20,8 +20,8 @@ export default defineComponent({
 
   setup() {
     const about = ref({
-      title: "Vue 3",
-      subTitle: "TypeScript demo",
+      title: 'Vue 3',
+      subTitle: 'TypeScript demo',
     });
 
     return {
@@ -45,5 +45,5 @@ export default defineComponent({
 </script>
 
 <style>
-@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
 </style>
