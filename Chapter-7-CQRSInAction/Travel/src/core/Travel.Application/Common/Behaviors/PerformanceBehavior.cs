@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Travel.Application.Common.Behaviors
 {
   internal class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
   {
     private readonly Stopwatch _timer;
     private readonly ILogger<TRequest> _logger;
