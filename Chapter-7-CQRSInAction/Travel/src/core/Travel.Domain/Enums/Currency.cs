@@ -1,11 +1,10 @@
-﻿namespace Travel.Domain.Enums
+﻿namespace Travel.Domain.Enums;
+
+public enum Currency
 {
-  public enum Currency
-  {
     PHP,
     USD,
     JPY,
     EUR,
     NOK
-  }
 }

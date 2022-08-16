@@ -6,10 +6,10 @@ using Travel.Application.Common.Interfaces;
 using Travel.Domain.Entities;
 using Travel.Domain.Enums;
 
-namespace Travel.Application.TourPackages.Commands.UpdateTourPackageDetail
+namespace Travel.Application.TourPackages.Commands.UpdateTourPackageDetail;
+
+public class UpdateTourPackageDetailCommand : IRequest
 {
-  public class UpdateTourPackageDetailCommand : IRequest
-  {
     public int Id { get; set; }
     public int ListId { get; set; }
     public string WhatToExpect { get; set; }
@@ -18,35 +18,35 @@ namespace Travel.Application.TourPackages.Commands.UpdateTourPackageDetail
     public int Duration { get; set; }
     public bool InstantConfirmation { get; set; }
     public Currency Currency { get; set; }
-  }
+}
 
-  public class UpdateTourPackageDetailCommandHandler : IRequestHandler<UpdateTourPackageDetailCommand>
-  {
+public class UpdateTourPackageDetailCommandHandler : IRequestHandler<UpdateTourPackageDetailCommand>
+{
     private readonly IApplicationDbContext _context;
 
     public UpdateTourPackageDetailCommandHandler(IApplicationDbContext context)
     {
-      _context = context;
+        _context = context;
     }
 
     public async Task<Unit> Handle(UpdateTourPackageDetailCommand request, CancellationToken cancellationToken)
     {
-      var entity = await _context.TourPackages.FindAsync(request.Id);
-      if (entity == null)
-      {
-        throw new NotFoundException(nameof(TourPackage), request.Id);
-      }
-      entity.ListId = request.ListId;
-      entity.WhatToExpect = request.WhatToExpect;
-      entity.MapLocation = request.MapLocation;
-      entity.Price = request.Price;
-      entity.Duration = request.Duration;
-      entity.InstantConfirmation = request.InstantConfirmation;
-      entity.Currency = request.Currency;
+        var entity = await _context.TourPackages.FindAsync(request.Id);
+        if (entity == null)
+        {
+            throw new NotFoundException(nameof(TourPackage), request.Id);
+        }
 
-      await _context.SaveChangesAsync(cancellationToken);
+        entity.ListId = request.ListId;
+        entity.WhatToExpect = request.WhatToExpect;
+        entity.MapLocation = request.MapLocation;
+        entity.Price = request.Price;
+        entity.Duration = request.Duration;
+        entity.InstantConfirmation = request.InstantConfirmation;
+        entity.Currency = request.Currency;
 
-      return Unit.Value;
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
     }
-  }
 }

@@ -1,9 +1,9 @@
 ﻿using Travel.Domain.Enums;
 
-namespace Travel.Domain.Entities
+namespace Travel.Domain.Entities;
+
+public class TourPackage
 {
-  public class TourPackage
-  {
     public int Id { get; set; }
     public int ListId { get; set; }
     public string Name { get; set; }
@@ -14,5 +14,4 @@ namespace Travel.Domain.Entities
     public bool InstantConfirmation { get; set; }
     public Currency Currency { get; set; }
     public TourList List { get; set; }
-  }
 }

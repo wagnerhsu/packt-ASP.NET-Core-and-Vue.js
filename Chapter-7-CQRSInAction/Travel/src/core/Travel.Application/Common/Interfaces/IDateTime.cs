@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Travel.Application.Common.Interfaces
+namespace Travel.Application.Common.Interfaces;
+
+public interface IDateTime
 {
-  public interface IDateTime
-  {
     DateTime NowUtc { get; }
-  }
 }

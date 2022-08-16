@@ -4,30 +4,31 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Travel.Application.Common.Behaviors
+namespace Travel.Application.Common.Behaviors;
+
+public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    private readonly ILogger<TRequest> _logger;
+
+    public UnhandledExceptionBehavior(ILogger<TRequest> logger)
     {
-        private readonly ILogger<TRequest> _logger;
+        _logger = logger;
+    }
 
-        public UnhandledExceptionBehavior(ILogger<TRequest> logger)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+        RequestHandlerDelegate<TResponse> next)
+    {
+        try
         {
-            _logger = logger;
+            return await next();
         }
-
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        catch (Exception ex)
         {
-            try
-            {
-                return await next();
-            }
-            catch (Exception ex)
-            {
-                var requestName = typeof(TRequest).Name;
-                _logger.LogError(ex, "Travel Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
-                throw;
-            }
+            var requestName = typeof(TRequest).Name;
+            _logger.LogError(ex, "Travel Request: Unhandled Exception for Request {Name} {@Request}", requestName,
+                request);
+            throw;
         }
     }
 }
